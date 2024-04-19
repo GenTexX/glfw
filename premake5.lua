@@ -4,6 +4,7 @@ local current_dir = os.getcwd()
 project "glfw"
     kind "StaticLib"
     language "C"
+    staticruntime "On"
 
 	targetdir("./bin/" .. outputDir .. "/%{prj.name}")
 	objdir("./bin-int/" .. outputDir .. "/%{prj.name}")
@@ -40,6 +41,7 @@ project "glfw"
             "src/win32_init.c",
             "src/win32_joystick.c",
             "src/win32_monitor.c",
+            "src/win32_module.c",
             "src/win32_time.c",
             "src/win32_thread.c",
             "src/win32_window.c",
@@ -96,12 +98,14 @@ project "glfw"
             "_GLFW_COCOA"
         }
 
-    -- Debug configuration
-    filter "configurations:Debug"
-        runtime "Debug"
+    filter "configurations:debug"
         symbols "On"
+		optimize "Debug"
 
-    -- Release configuration
-    filter "configurations:Release"
-        runtime "Release"
-        optimize "On"
+	filter "configurations:pre"
+        symbols "Off"
+		optimize "On"
+
+	filter "configurations:release"
+        symbols "Off"
+		optimize "Speed"
